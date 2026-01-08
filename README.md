@@ -1,49 +1,41 @@
-ct-correction-cfs-ecmwf
+# ct-correction-cfs-ecmwf
 
-Pipeline for ECMWF System 51 hindcast processing and bias correction (LS-Add) of subseasonal precipitation forecasts, producing monthly accumulated precipitation (mm).
+Pipeline for **ECMWF System 51 hindcast processing** and **bias correction (LS-Add)** of subseasonal precipitation forecasts, producing **monthly accumulated precipitation (mm)**.
 
-This repository provides the core correction workflow. Detailed script usage and operational examples are documented in the individual README files shipped with each script.
+This repository provides the **core correction workflow**.  
+Detailed usage instructions are available in the README files shipped with each script.
 
-What this repository does
+---
 
-The pipeline is organized in two main stages:
+## Overview
 
-1. Hindcast processing (ECMWF System 51)
+The pipeline is composed of two main stages:
 
-Downloads hindcast data from the Copernicus Climate Data Store (CDS)
+### 1. Hindcast processing (ECMWF System 51)
+- Download of hindcast data from the **Copernicus Climate Data Store (CDS)**
+- Variable: total precipitation rate (`tprate`, m/s)
+- Conversion to **monthly accumulated precipitation (mm)**
+- Leads **1–6**
+- Computation of hindcast climatology (mean over members and initialization dates)
+- Optional regridding to a reference grid
+- Output in NetCDF format
 
-Variable: total precipitation rate (tprate, m/s)
+### 2. Forecast bias correction
+- Reads raw subseasonal forecast NetCDF files
+- Removes incomplete final months
+- Aggregates data to monthly totals
+- Adjusts longitude convention (0–360 ↔ −180–180)
+- Optional regridding to the reference grid
+- Applies **LS-Add bias correction**
+- Negative values are truncated to zero
 
-Converts precipitation to monthly accumulated totals (mm)
+---
 
-Supports leads 1–6
+## Bias correction method (LS-Add)
 
-Computes hindcast climatology (mean over members and initialization dates)
+The correction is performed independently for each **lead time** and **calendar month**, using the Linear Scaling – Additive method:
 
-Optional regridding to a reference grid
-
-Outputs NetCDF files for use in forecast correction
-
-2. Forecast bias correction
-
-Reads raw subseasonal forecast NetCDF files
-
-Removes incomplete final months
-
-Aggregates data to monthly totals
-
-Harmonizes longitude convention (0–360 ↔ −180–180)
-
-Optional regridding to the same reference grid as climatology
-
-Applies LS-Add bias correction
-
-Ensures physical consistency by truncating negative precipitation values to zero
-
-Bias correction method (LS-Add)
-
-The correction applied is Linear Scaling – Additive (LS-Add), performed independently for each lead and calendar month:
-
+```text
 corrected_forecast =
     raw_forecast +
     (observed_climatology(month_of_lead)
@@ -52,18 +44,20 @@ corrected_forecast =
 
 Where:
 
-raw_forecast is the monthly accumulated forecast precipitation
+raw_forecast: monthly accumulated forecast precipitation
 
-observed_climatology is derived from an observational reference dataset
+observed_climatology: climatology from an observational reference dataset
 
-hindcast_climatology is computed from ECMWF System 51 hindcasts
+hindcast_climatology: climatology computed from ECMWF System 51 hindcasts
 
-This method preserves forecast anomalies while correcting systematic mean bias.
+This approach preserves forecast anomalies while correcting systematic mean bias.
 
-Dependencies
-Required
+Requirements
+Recommended
 
 Python 3.9+
+
+Core dependencies
 
 numpy
 
@@ -75,7 +69,7 @@ cdsapi
 
 cfgrib
 
-ecCodes (must be installed at system level)
+ecCodes (system-level installation required)
 
 Optional (regridding)
 
@@ -85,26 +79,29 @@ Example installation:
 
 pip install numpy xarray cdsapi cfgrib xesmf
 
-
-Note: ecCodes must be installed via your system package manager or Conda.
+Note: ecCodes must be installed via Conda or the system package manager.
 
 Output structure (strict rule)
 
-Scripts only write output inside the directories explicitly passed via --out-* arguments.
+All scripts only write files inside directories explicitly passed via --out-* arguments.
+
 No additional folders are created automatically.
 
-This constraint is intentional to ensure safe integration in operational environments.
+This rule is enforced to ensure compatibility with operational workflows.
 
 Documentation scope
 
 This README describes what the pipeline does
 
-Detailed how-to, arguments, and operational examples are documented in the README files associated with each script
+Detailed arguments, execution steps, and examples are documented in the script-level README files
 
-If needed, this README can be:
+### Por que agora vai ficar “bonito” no GitHub
+- Hierarquia clara (`##`, `###`)
+- Linhas curtas (GitHub renderiza melhor)
+- Blocos de código bem separados
+- Texto respirável (como no exemplo que você mostrou)
 
-Adapted to StormGeo operational standards
-
-Shortened for production environments
-
-Extended with a scientific/technical appendix describing assumptions and limitations
+Se quiser, no próximo passo eu posso:
+- Ajustar para **padrão StormGeo**
+- Deixar ainda mais **minimalista**
+- Comparar lado a lado com o README do *Climatempo* e alinhar o estilo visual
