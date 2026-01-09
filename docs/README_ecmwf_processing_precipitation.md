@@ -21,7 +21,7 @@ WHAT THIS SCRIPT DOES
 ----------------------------------------------------------------------
 PROCESSING
 ----------------------------------------------------------------------
-python3 t.py  
+python3 ECMWF_Processing_precipitation.py  
 /--doy-root /home/felipe/operacao_linux/temperatura/2m_air_temperature_min/2025 
 /--out-grib /home/felipe/operacao_linux/temperatura/ECMWF_HINDCAST_OUT 
 /--out-nc /home/felipe/operacao_linux/temperatura/ECMWF_HINDCAST_OUT_PROCESSED 

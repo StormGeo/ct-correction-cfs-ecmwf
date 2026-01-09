@@ -12,7 +12,7 @@ This script implements an operational forecast correction pipeline for TEMPERATU
   - hindcast climatology (assumed already on the final grid)
   - observed monthly climatology (time=12)
 
-python3 ecmwf_corr_temperature.py \
+python3 ECMWF_correction_temperature.py \
   --forecast-root /home/felipe/operacao_linux/temperatura/2m_air_temperature_min/2025 \
   --hindcast-root /home/felipe/operacao_linux/NEW_TEMP/ECMWF_HINDCAST_PROCESSED_2 \
   --clim-file /home/felipe/operacao_linux/climatology \

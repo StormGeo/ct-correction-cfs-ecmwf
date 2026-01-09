@@ -33,7 +33,7 @@ For each raw forecast NetCDF file, the script performs the following steps:
 ----------------------------------------------------------------------
 PROCESSING
 ----------------------------------------------------------------------
-python3 ecmwf_corr_precip.py \
+python3 ECMWF_correction_precipitation.py \
   --forecast-root /home/felipe/operacao_linux/2025/ECMWF_2025 \
   --hindcast-root /home/felipe/operacao_linux/ECMWF_HINDCAST_OUT_PROCESSED \
   --clim-file /home/felipe/operacao_linux/precip_mensal.nc \
